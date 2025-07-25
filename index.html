@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desculpas para Pamela ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientMove 6s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart-float {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 20px;
+            animation: floatUp 4s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4em;
+            font-weight: 700;
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: titlePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            height: 12px;
+            margin: 30px 0;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d);
+            width: 0%;
+            border-radius: 25px;
+            transition: all 0.8s ease;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .progress-text {
+            text-align: center;
+            color: white;
+            font-weight: 500;
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+
+        .desculpa-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .desculpa-card.locked {
+            opacity: 0.5;
+            transform: scale(0.95);
+            filter: grayscale(0.3);
+        }
+
+        .desculpa-card:not(.locked) {
+            cursor: pointer;
+        }
+
+        .desculpa-card:not(.locked):hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .desculpa-card.unlocked {
+            background: rgba(107, 203, 119, 0.2);
+            border-color: rgba(107, 203, 119, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            font-size: 2.5em;
+            margin-right: 15px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            color: white;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .card-status {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .status-locked {
+            background: rgba(255, 107, 107, 0.3);
+            color: #ffb3b3;
+        }
+
+        .status-ready {
+            background: rgba(255, 193, 7, 0.3);
+            color: #fff3cd;
+        }
+
+        .status-unlocked {
+            background: rgba(107, 203, 119, 0.3);
+            color: #d4edda;
+        }
+
+        .card-content {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .unlock-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .unlock-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .unlock-btn:disabled {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .final-message {
+            display: none;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 107, 107, 0.2));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .final-message.show {
+            display: block;
+            animation: finalReveal 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes finalReveal {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(180deg);
+            }
+            70% {
+                transform: scale(1.1) rotate(-10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .final-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8em;
+            color: #ffd700;
+            margin-bottom: 25px;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .final-content {
+            color: white;
+            font-size: 1.2em;
+            line-height: 1.7;
+            text-align: left;
+        }
+
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .sparkle-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: sparkleAnim 1s ease-out forwards;
+        }
+
+        @keyframes sparkleAnim {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(3) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.8em;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .desculpa-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="floatingHearts"></div>
+    
+    <div class="container">
+        <h1 class="main-title">Para minha Pamela ❤️</h1>
+        <p class="subtitle">Suas desculpas especiais me esperam...</p>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text" id="progressText">0 de 3 desculpas aceitas</div>
+
+        <div class="desculpa-card" data-desculpa="louça" data-order="1">
+            <div class="card-header">
+                <div class="card-icon">🍽️</div>
+                <div class="card-title">Desculpa pela Louça</div>
+                <div class="card-status status-ready" id="status-louça">Pronta</div>
+            </div>
+            <div class="card-content">
+                Amor, eu sei que deixei a louça acumular na pia... Prometo ser mais organizado e cuidar melhor da nossa casa! 😅
+            </div>
+            <button class="unlock-btn" onclick="unlockDesculpa('louça')">
+                ✨ Clique Aqui Para Liberar ✨
+            </button>
+        </div>
+
+        <div class="desculpa-card locked" data-desculpa="presente" data-order="2">
+            <div class="card-header">
+                <div class="card-icon">💕</div>
+                <div class="card-title">Desculpa por Não Ser Mais Presente</div>
+                <div class="card-status status-locked" id="status-presente">Bloqueada</div>
+            </div>
+            <div class="card-content">
+                Desculpe por não ser mais presente e romântico... Você merece toda minha atenção e carinho sempre! 💖
+            </div>
+            <button class="unlock-btn" onclick="unlockDesculpa('presente')" disabled>
+                🔒 Libere a primeira desculpa
+            </button>
+        </div>
+
+        <div class="desculpa-card locked" data-desculpa="criativo" data-order="3">
+            <div class="card-header">
+                <div class="card-icon">💻</div>
+                <div class="card-title">Meu Jeito Criativo</div>
+                <div class="card-status status-locked" id="status-criativo">Bloqueada</div>
+            </div>
+            <div class="card-content">
+                Do meu jeito, tento te agradar sendo criativo... Às vezes entendo, às vezes não, mas sempre com muito amor! 🎨
+            </div>
+            <button class="unlock-btn" onclick="unlockDesculpa('criativo')" disabled>
+                🔒 Libere as duas primeiras
+            </button>
+        </div>
+
+        <div class="final-message" id="finalMessage">
+            <div class="final-title">Todas Aceitas! 🎉</div>
+            <div class="final-content">
+                <strong>Pamela, minha vida...</strong>
+                <br><br>
+                Obrigado por aceitar todas as minhas desculpas! ❤️
+                <br><br>
+                Sei que não sou perfeito, mas prometo me esforçar todos os dias para ser o noivo que você merece. Cada desculpa aceita é uma nova chance de te amar melhor.
+                <br><br>
+                Você é a pessoa mais especial da minha vida, e mesmo com todos os meus defeitos, espero que saiba o quanto te amo.
+                <br><br>
+                <em>Com todo meu amor e carinho,</em>
+                <br>
+                <strong>Seu noivo que te ama infinitamente! 💕✨</strong>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let unlockedCount = 0;
+        const totalDesculpas = 3;
+
+        // Criar corações flutuantes
+        function createFloatingHeart() {
+            const hearts = ['❤️', '💕', '💖', '💗', '💝', '💜'];
+            const heart = document.createElement('div');
+            heart.className = 'heart-float';
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            
+            document.getElementById('floatingHearts').appendChild(heart);
+            
+            setTimeout(() => {
+                if (heart.parentNode) {
+                    heart.remove();
+                }
+            }, 5000);
+        }
+
+        // Criar efeito de brilho
+        function createSparkles(x, y) {
+            const sparkleContainer = document.createElement('div');
+            sparkleContainer.className = 'sparkle';
+            sparkleContainer.style.left = x + 'px';
+            sparkleContainer.style.top = y + 'px';
+            
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'sparkle-particle';
+                particle.style.left = Math.random() * 20 - 10 + 'px';
+                particle.style.top = Math.random() * 20 - 10 + 'px';
+                sparkleContainer.appendChild(particle);
+            }
+            
+            document.body.appendChild(sparkleContainer);
+            
+            setTimeout(() => {
+                sparkleContainer.remove();
+            }, 1000);
+        }
+
+        // Atualizar progresso
+        function updateProgress() {
+            const percentage = (unlockedCount / totalDesculpas) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${unlockedCount} de ${totalDesculpas} desculpas aceitas`;
+        }
+
+        // Desbloquear desculpa
+        function unlockDesculpa(tipo) {
+            const card = document.querySelector(`[data-desculpa="${tipo}"]`);
+            const status = document.getElementById(`status-${tipo}`);
+            const button = card.querySelector('button');
+            
+            if (card.classList.contains('unlocked')) {
+                return; // Já foi desbloqueada
+            }
+            
+            // Marcar como desbloqueada
+            card.classList.remove('locked');
+            card.classList.add('unlocked');
+            status.textContent = 'Aceita';
+            status.className = 'card-status status-unlocked';
+            button.style.display = 'none';
+            
+            unlockedCount++;
+            updateProgress();
+            
+            // Efeito de brilhos
+            const rect = card.getBoundingClientRect();
+            createSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            
+            // Criar vários corações
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => createFloatingHeart(), i * 200);
+            }
+            
+            // Desbloquear próxima desculpa
+            if (unlockedCount === 1) {
+                const nextCard = document.querySelector('[data-desculpa="presente"]');
+                const nextStatus = document.getElementById('status-presente');
+                const nextButton = nextCard.querySelector('button');
+                
+                nextCard.classList.remove('locked');
+                nextStatus.textContent = 'Pronta';
+                nextStatus.className = 'card-status status-ready';
+                nextButton.disabled = false;
+                nextButton.innerHTML = '✨ Clique Aqui Para Liberar ✨';
+                
+            } else if (unlockedCount === 2) {
+                const nextCard = document.querySelector('[data-desculpa="criativo"]');
+                const nextStatus = document.getElementById('status-criativo');
+                const nextButton = nextCard.querySelector('button');
+                
+                nextCard.classList.remove('locked');
+                nextStatus.textContent = 'Pronta';
+                nextStatus.className = 'card-status status-ready';
+                nextButton.disabled = false;
+                nextButton.innerHTML = '✨ Clique Aqui Para Liberar ✨';
+                
+            } else if (unlockedCount === 3) {
+                // Mostrar mensagem final
+                setTimeout(() => {
+                    document.getElementById('finalMessage').classList.add('show');
+                    
+                    // Chuva de corações
+                    for (let i = 0; i < 15; i++) {
+                        setTimeout(() => createFloatingHeart(), i * 100);
+                    }
+                    
+                    // Efeitos de brilho pela tela
+                    for (let i = 0; i < 10; i++) {
+                        setTimeout(() => {
+                            createSparkles(
+                                Math.random() * window.innerWidth,
+                                Math.random() * window.innerHeight
+                            );
+                        }, i * 150);
+                    }
+                }, 800);
+            }
+        }
+
+        // Inicializar
+        setInterval(createFloatingHeart, 2000);
+        updateProgress();
+        
+        // Criar alguns corações iniciais
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => createFloatingHeart(), i * 500);
+        }
+    </script>
+</body>
+</html>
